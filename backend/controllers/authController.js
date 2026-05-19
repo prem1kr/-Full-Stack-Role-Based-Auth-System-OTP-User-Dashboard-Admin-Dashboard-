@@ -21,7 +21,7 @@ export const Signup = async (req, res) => {
             role,
             userName,
             email,
-            password = hashPassword
+            password :hashPassword
         });
 
         const saferData = {
