@@ -30,7 +30,11 @@ const authSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+<<<<<<< HEAD
     otpExpire: {
+=======
+   otpExpire: {
+>>>>>>> 23a7191f0bbae5bf523d691da255b0af7e0ec229
         type: Date,
         default: null
     },
