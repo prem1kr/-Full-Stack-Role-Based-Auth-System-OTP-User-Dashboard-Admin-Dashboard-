@@ -48,7 +48,7 @@ export const Login = async (req, res) => {
             return res.status(400).json({ success: false, message: "All field required" });
         }
 
-        const user = await authModel.findOne({ email }).select('password');
+        const user = await authModel.findOne({ email });
         if (!user) {
             return res.status(404).json({ success: false, message: `${email} not found, Signup first` });
         }
@@ -90,8 +90,9 @@ export const sendOtp = async (req, res) => {
         }
 
         const otp = (Math.floor(100000 + Math.random() * 900000)).toString();
-        // const hashOtp = await bcrypt.hash(otp, 10);
-        // user.otp = hashOtp;
+        const hashOtp = await bcrypt.hash(otp, 10);
+        user.otp = hashOtp;
+
         user.otpExpire = Date.now() + 10 * 60 * 1000;
         await user.save();
 
@@ -130,10 +131,10 @@ export const verifyOtp = async (req, res) => {
             return res.status(400).json({ success: false, message: "OTP Expired" });
         }
 
-        // const isValid = await bcrypt.compare(otp, user.otp);
-        // if (!isValid) {
-        //     return res.status(400).json({ success: false, message: "Invalid otp" });
-        // }
+        const isValid = await bcrypt.compare(otp, user.otp);
+        if (!isValid) {
+            return res.status(400).json({ success: false, message: "Invalid otp" });
+        }
 
         user.isVerified = true;
         user.otp = null;
@@ -153,4 +154,31 @@ export const verifyOtp = async (req, res) => {
         console.log(error);
         return res.status(500).json({ success: false, message: "Server Error", error: error.message });
     }
+}
+
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {password } = req.body;
+        if(!password){
+            return res.status(400).json({success:false, message:"Password filled required"});
+        }
+
+        const user = await authModel.findById(id);
+        if(!user){
+            return res.status(404).json({success:false, message:"user not found, Signup first"});
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+        await user.save();
+        
+        return res.status(200).json({success:true, message:"password reset successfull"});
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    }
+
 }
