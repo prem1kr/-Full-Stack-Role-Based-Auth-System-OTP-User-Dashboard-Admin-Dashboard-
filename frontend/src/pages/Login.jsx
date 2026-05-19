@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { validateLogin } from '../utils/loginValidation.js';
-import { login, sendotp, verifyotp } from '../hooks/useAuth.js';
+import { login, sendotp, sendotpemail, verifyotp } from '../hooks/useAuth.js';
 import LoadingSpinner from '../components/Loading.jsx';
 
 const Login = () => {
@@ -25,10 +25,11 @@ const Login = () => {
         try {
             setLoading(true);
             const data = { email, password };
+            await sendotpemail(email);
+
             const response = await login(data);
             if (response.success) {
                 setUsers(response.user);
-                await sendotp(response.user.id);
                 alert(response.message);
                 setShowOtp(true);
                 setShowLoginForm(false);

@@ -210,3 +210,49 @@ export const sendOtpEmail = async (req, res) => {
         return res.status(500).json({ success: false, message: "Server Error", error: error.message });
     }
 }
+
+
+export const verifyOtpemail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const { otp } = req.body;
+        if (!otp) {
+            return res.status(400).json({ success: false, message: "OTP required" });
+        }
+
+        const user = await authModel.findOne({email});
+        if (!user || !user.otp) {
+            return res.status(400).json({ success: false, message: "Invalid or expired OTP" });
+        }
+
+        if (!user.otpExpire || user.otpExpire < Date.now()) {
+            user.otp = null,
+                user.otpExpire = null,
+                await user.save();
+            return res.status(400).json({ success: false, message: "OTP Expired" });
+        }
+
+        const isValid = await bcrypt.compare(otp, user.otp);
+        if (!isValid) {
+            return res.status(400).json({ success: false, message: "Invalid otp" });
+        }
+
+        user.isVerified = true;
+        user.otp = null;
+        user.otpExpire = null;
+        await user.save();
+
+        const saferData = {
+            id: user._id,
+            userName: user.userName,
+            email: user.email,
+            role: user.role
+        }
+
+        return res.status(200).json({ success: true, message: "Account verified", user: saferData });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    }
+}
