@@ -8,6 +8,7 @@ export const signup = async (data) => {
         return response.data;
     } catch (error) {
         console.log(error);
+        return error.response.data;
     }
 }
 
@@ -19,6 +20,7 @@ export const login = async (data) => {
 
     }catch(error){
         console.log(error);
+        return error.response.data;
     }
 }
 
@@ -29,6 +31,7 @@ export const sendotp = async (id) => {
         return response.data;
     }catch(error){
         console.log(error);
+        return error.response.data;
     }
 }
 
@@ -39,7 +42,7 @@ export const verifyotp = async (id,otp) => {
         return response.data;
     }catch(error){
         console.log(error);
-        alert('error', "verify otp errror");
+        return error.response.data;
     }
 }
 
@@ -50,6 +53,6 @@ export const resetpassword = async(id,password) => {
         return response.data;
     }catch(error){
         console.log(error);
-        alert('error', "error reset password");
+        return error.response.data;
     }
 }

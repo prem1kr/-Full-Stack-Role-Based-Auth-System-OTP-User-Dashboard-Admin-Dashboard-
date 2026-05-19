@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { sendotp, signup, verifyotp } from '../hooks/useAuth.js';
+import { validateSignup } from '../utils/signupValidation.js';
+import LoadingSpinner from '../components/Loading.jsx';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -7,29 +10,99 @@ const Signup = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [Loading, setLoading] = useState(false);
+    const [otp, setOtp] = useState('');
+    const [showOtp, setShowOtp] = useState(false);
+    const [users, setUsers] = useState();
+    const [showSignup, setShowSignup] = useState(true);
 
-    const handleSignup = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
-        alert(`${role},${name} Signup Successful`);
-        navigate('/login');
+        const validation = validateSignup({ name, email, password, role });
+        if (!validation.success) {
+            return alert(validation.message);
+        }
+
+        try {
+            setLoading(true);
+            const data = { userName: name, email, password, role };
+            const response = await signup(data);
+            const id = users.id;
+            if (response.success) {
+                setUsers(response.user);
+                await sendotp(id);
+                alert(`${role}, ${name} ${response.message}`);
+                 setShowSignup(false);
+                setShowOtp(true);
+                console.log(response.user);
+            } else {
+                alert(response.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            alert("Something went wrong");
+        } finally {
+            setLoading(false);
+        }
     };
+
+    const handleVerifyOtp = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            const id = users.id;
+            const response = await verifyotp(id, otp);
+            if (response.success) {
+                alert(`${users.role} Verified successfully`);
+                alert(`${users.role} Login Successful`);
+
+                if (users.role === 'admin') {
+                    navigate('/admin/home');
+                } else {
+                    navigate('/user/home');
+                }
+            } else {
+                alert(response.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            alert("Something went wrong");
+        } finally {
+            setLoading(false);
+        }
+
+    }
 
     return (
         <div className="container">
             <form className="form" onSubmit={handleSignup} >
                 <h1>Signup</h1>
 
-                <select value={role} onChange={(e) => setRole(e.target.value)}>
-                    <option value=""> Select Role  </option>
-                    <option value="user"> User </option>
-                    <option value="admin">  Admin</option>
-                </select>
+                {showSignup &&
+                    <>
+                        <select value={role} onChange={(e) => setRole(e.target.value)}>
+                            <option value=""> Select Role  </option>
+                            <option value="user"> User </option>
+                            <option value="admin">  Admin</option>
+                        </select>
 
-                <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                <button type="submit"> Signup </button>
+                        {Loading ? <LoadingSpinner /> : <button type="submit" > Signup </button>}
+                    </>
+                }
+
+                {showOtp &&
+                    <>
+                        <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
+                        {Loading ? <LoadingSpinner /> : <button onClick={handleVerifyOtp}> Verify OTP </button>}
+                    </>
+                }
+
                 <p onClick={() => navigate('/login')}> Already have account? </p>
 
             </form>

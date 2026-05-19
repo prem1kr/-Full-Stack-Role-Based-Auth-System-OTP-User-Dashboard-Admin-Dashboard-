@@ -14,7 +14,7 @@ export const Signup = async (req, res) => {
 
         const ExistingUser = await authModel.findOne({ email });
         if (ExistingUser) {
-            return res.status(409).json({ success: false, message: `Email - ${email} Alredy Exist , Please Use Differet Email` });
+            return res.status(409).json({ success: false, message: `Email Alredy Exist , Please Use Differet Email` });
         }
 
         const hashPassword = await bcrypt.hash(password, 10);
@@ -180,4 +180,33 @@ export const resetPassword = async (req, res) => {
         return res.status(500).json({ success: false, message: "Server Error", error: error.message });
     }
 
+}
+
+
+export const sendOtpEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await authModel.findOne({email});
+        if (!user) {
+            return res.status(404).json({ success: false, message: "user not found" });
+        }
+
+        const otp = (Math.floor(100000 + Math.random() * 900000)).toString();
+        const hashOtp = await bcrypt.hash(otp, 10);
+        user.otp = hashOtp;
+        user.otpExpire = Date.now() + 10 * 60 * 1000;
+        await user.save();
+
+        await sendEmail({
+            to: user.email,
+            subject: "Yout Verification Code",
+            text: `Yout OTP is ${otp}. Its expire in 10 minutes.`
+        });
+
+        return res.status(200).json({ success: true, message: "opt successfully sended" });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    }
 }
