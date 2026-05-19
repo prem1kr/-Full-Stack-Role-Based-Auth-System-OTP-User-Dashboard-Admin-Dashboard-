@@ -93,7 +93,7 @@ export const sendOtp = async (req, res) => {
         // const hashOtp = await bcrypt.hash(otp, 10);
 
         user.otp = otp;
-        user.optExpire = Date.now() + 10 * 60 * 1000;
+        user.otpExpire = Date.now() + 10 * 60 * 1000;
         await user.save();
 
         // send otp service with await
