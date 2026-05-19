@@ -90,9 +90,8 @@ export const sendOtp = async (req, res) => {
         }
 
         const otp = (Math.floor(100000 + Math.random() * 900000)).toString();
-        // const hashOtp = await bcrypt.hash(otp, 10);
-        // user.otp = hashOtp;
-        user.otp = otp;
+        const hashOtp = await bcrypt.hash(otp, 10);
+        user.otp = hashOtp;
         user.otpExpire = Date.now() + 10 * 60 * 1000;
         await user.save();
 
@@ -131,10 +130,10 @@ export const verifyOtp = async (req, res) => {
             return res.status(400).json({ success: false, message: "OTP Expired" });
         }
 
-        // const isValid = await bcrypt.compare(otp, user.otp);
-        // if (!isValid) {
-        //     return res.status(400).json({ success: false, message: "Invalid otp" });
-        // }
+        const isValid = await bcrypt.compare(otp, user.otp);
+        if (!isValid) {
+            return res.status(400).json({ success: false, message: "Invalid otp" });
+        }
 
         user.isVerified = true;
         user.otp = null;
