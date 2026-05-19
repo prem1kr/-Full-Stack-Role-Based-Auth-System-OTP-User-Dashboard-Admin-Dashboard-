@@ -30,7 +30,7 @@ const authSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    optExpire: {
+    otpExpire: {
         type: Date,
         default: null
     },
