@@ -14,7 +14,7 @@ export const Signup = async (req, res) => {
 
         const ExistingUser = await authModel.findOne({ email });
         if (ExistingUser) {
-            return res.status(409).json({ success: false, message: `Email - ${email} Alredy Exist , Please Use Differet Email` });
+            return res.status(409).json({ success: false, message: `Email Alredy Exist , Please Use Differet Email` });
         }
 
         const hashPassword = await bcrypt.hash(password, 10);
