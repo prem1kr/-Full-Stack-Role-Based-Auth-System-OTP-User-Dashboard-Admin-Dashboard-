@@ -1,0 +1,55 @@
+import axios from "axios";
+
+const API_URL = 'https://smtp-role-based-and-otp-verification.onrender.com/api/auth';
+
+export const signup = async (data) => {
+    try {
+        const response = await axios.post(`${API_URL}/signup`, data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+export const login = async (data) => {
+    try{
+        const response = await axios.post(`${API_URL}/login`,data);
+        return response.data;
+
+    }catch(error){
+        console.log(error);
+    }
+}
+
+
+export const sendotp = async (id) => {
+    try{
+        const response = await axios.post(`${API_URL}/send-otp/${id}`);
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
+
+export const verifyotp = async (id,otp) => {
+    try{
+        const response = await axios.post(`${API_URL}/verify-otp/${id}`,{otp});
+        return response.data;
+    }catch(error){
+        console.log(error);
+        alert('error', "verify otp errror");
+    }
+}
+
+
+export const resetpassword = async(id,password) => {
+    try{
+        const response = await axios.post(`${API_URL}/reset-password/${id}`,{password});
+        return response.data;
+    }catch(error){
+        console.log(error);
+        alert('error', "error reset password");
+    }
+}
