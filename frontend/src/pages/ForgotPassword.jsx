@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { resetpassword, sendotpemail, verifyotpemail } from '../hooks/useAuth';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -8,30 +9,39 @@ const ForgotPassword = () => {
     const [showEmail, setShowEmail] = useState(true);
     const [showOtp, setShowOtp] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
+    const [users, setUsers] = useState();
     const Navigate = useNavigate();
 
-    const handleSendOtp = (e) => {
+    const handleSendOtp = async (e) => {
         e.preventDefault();
-        const generatedOtp = Math.floor(
-            100000 + Math.random() * 900000
-        );
-        alert(`OTP Sent To ${email}`, generatedOtp);
-        setShowEmail(false);
-        setShowOtp(true);
-
+        const response = await sendotpemail(email);
+        if (response.success) {
+            setShowEmail(false);
+            setShowOtp(true);
+        }
     };
 
-    const handleVerifyOtp = (e) => {
+    const handleVerifyOtp = async (e) => {
         e.preventDefault();
-        alert(`OTP Verified successfully`);
-        setShowOtp(false);
-        setShowNewPassword(true);
+        const response = await verifyotpemail(email, otp);
+        if (response.success) {
+            setUsers(response.user);
+            alert(`OTP Verified successfully`);
+            setShowOtp(false);
+            setShowNewPassword(true);
+        }
+
     }
 
-    const handleResetPassword = (e) => {
+    const handleResetPassword = async (e) => {
         e.preventDefault();
-        alert("Password Reset Successful");
-        Navigate('/login');
+        const id = users.id;
+        const response = await resetpassword(id, newPassword);
+        if (response.success) {
+            alert("Password Reset Successful");
+            Navigate('/login');
+        }
+
 
     };
 

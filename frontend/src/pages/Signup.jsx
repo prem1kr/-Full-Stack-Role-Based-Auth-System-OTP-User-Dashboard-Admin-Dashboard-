@@ -27,14 +27,14 @@ const Signup = () => {
             setLoading(true);
             const data = { userName: name, email, password, role };
             const response = await signup(data);
-            const id = users.id;
             if (response.success) {
-                setUsers(response.user);
-                await sendotp(id);
-                alert(`${role}, ${name} ${response.message}`);
-                 setShowSignup(false);
                 setShowOtp(true);
+                setShowSignup(false);
+                setUsers(response.user);
+                alert(`${role}, ${name} ${response.message}`);
                 console.log(response.user);
+                const id = response.user.id;
+                await sendotp(id);
             } else {
                 alert(response.message);
             }
@@ -55,13 +55,7 @@ const Signup = () => {
             const response = await verifyotp(id, otp);
             if (response.success) {
                 alert(`${users.role} Verified successfully`);
-                alert(`${users.role} Login Successful`);
-
-                if (users.role === 'admin') {
-                    navigate('/admin/home');
-                } else {
-                    navigate('/user/home');
-                }
+               navigate('/login');
             } else {
                 alert(response.message);
             }
@@ -77,7 +71,7 @@ const Signup = () => {
 
     return (
         <div className="container">
-            <form className="form" onSubmit={handleSignup} >
+            <form className="form"  >
                 <h1>Signup</h1>
 
                 {showSignup &&
@@ -92,7 +86,7 @@ const Signup = () => {
                         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                        {Loading ? <LoadingSpinner /> : <button type="submit" > Signup </button>}
+                        {Loading ? <LoadingSpinner /> : <button type="submit" onClick={handleSignup} > Signup </button>}
                     </>
                 }
 
@@ -106,6 +100,8 @@ const Signup = () => {
                 <p onClick={() => navigate('/login')}> Already have account? </p>
 
             </form>
+
+
         </div>
     );
 };
