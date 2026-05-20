@@ -1,5 +1,5 @@
 import express from 'express';
-import { Login, resetPassword, resetPasswordemail, sendOtp, sendOtpEmail, Signup, verifyOtp, verifyOtpemail } from '../controllers/authController.js';
+import { Login, resetPassword, resetPasswordemail, sendOtp, sendOtpEmail, Signup, userData, verifyOtp, verifyOtpemail } from '../controllers/authController.js';
 
 const authRouter = express.Router();
 
@@ -11,6 +11,7 @@ authRouter.post('/reset-password/:id', resetPassword);
 authRouter.post('/sendemail-otp', sendOtpEmail);
 authRouter.post('/verifyemail-otp', verifyOtpemail);
 authRouter.post('/reset-password-email', resetPasswordemail);
+authRouter.get('/userData', userData);
 
 
 export default authRouter;

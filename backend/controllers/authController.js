@@ -282,3 +282,24 @@ export const resetPasswordemail = async (req, res) => {
     }
 
 }
+
+
+export const userData = async (req, res) => {
+    try{
+        const {email} = req.body;
+        const user  = await authModel.findOne({email});
+        if(!user){
+            return res.status(404).json({success:false, message:"user not found"});
+        }
+        const saferData = {
+            userName : user.userName ,
+            email : user.email
+        }
+
+        return res.status(200).json({success:true, message:"user fetched successfully", user:saferData});
+
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    }
+}
