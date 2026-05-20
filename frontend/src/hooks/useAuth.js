@@ -93,11 +93,21 @@ export const resetpasswordemail = async (email, password) => {
 
 export const userData = async (email) => {
     try {
-        const response = await axios.get(`${API_URL}/userData`,email)
-           return response.data;
+        const response = await axios.get(`${API_URL}/userData`, email)
+        return response.data;
     } catch (error) {
         console.log(error);
         return error.response.data;
     }
 }
 
+
+export const getAllUser = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/all-users`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return error.response.data;
+    }
+}

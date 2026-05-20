@@ -45,18 +45,35 @@ const profileSchema = new mongoose.Schema({
     course: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        enum: [
+            'B.Tech',
+            'BCA',
+            'MBA',
+            'MCA',
+            'BBA',
+            'B.Com'
+        ]
     },
 
     branch: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        enum: [
+            'CSE',
+            'ECE',
+            'ME',
+            'CE',
+            'EE',
+            'IT'
+        ]
     },
 
     semester: {
         type: Number,
-        required: true
+        required: true,
+        enum: [1, 2, 3, 4, 5, 6, 7, 8]
     },
 
     rollNumber: {
