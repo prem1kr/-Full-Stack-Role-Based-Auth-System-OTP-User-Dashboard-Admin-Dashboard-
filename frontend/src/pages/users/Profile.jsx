@@ -7,9 +7,7 @@ const Profile = () => {
   const user = userJson ? JSON.parse(userJson) : null;
   const name = user?.userName;
   const Email = user?.email;
-  const [profile, setProfile] = useState();
   const Id = user?.id;
-  console.log(profile);
   const [userName] = useState(name);
   const [email] = useState(Email);
   const [phone, setPhone] = useState('');
@@ -23,26 +21,25 @@ const Profile = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const formData = {userId:Id, userName, email, phone, address, pincode, course, branch, semester, rollNumber };
+    const formData = { userName, email, phone, address, pincode, course, branch, semester, rollNumber };
     try {
       setLoading(true)
       const response = await getProfile(Id);
       console.log("PROFILE DATA :", response);
       if (!response || !response.success) {
-       const response =  await addProfile(formData);
-        setProfile(response.profile);
+        await addProfile(formData);
         alert.log('profile added');
 
       } else {
         const updateData = { phone, address, pincode, course, branch, semester, rollNumber }
-        await updateProfile(Id,updateData);
+        await updateProfile(Id, updateData);
         alert('Profile Updated');
       }
 
     } catch (err) {
       console.error('Failed to save profile', err);
       alert('Failed to update profile');
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -62,7 +59,7 @@ const Profile = () => {
         <input type="number" name="semester" placeholder="Semester" value={semester} onChange={(e) => setSemester(e.target.value)} />
         <input type="text" name="rollNumber" placeholder="Roll Number" value={rollNumber} onChange={(e) => setRollNumber(e.target.value)} />
 
-        {Loading ? <LoadingSpinner/> : <button type="submit">Update Profile</button>}
+        {Loading ? <LoadingSpinner /> : <button type="submit">Update Profile</button>}
       </form>
     </div>
   );
