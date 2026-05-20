@@ -2,9 +2,9 @@ import profileModel from "../models/profileModel.js";
 
 export const createProfile = async (req, res) => {
     try {
-        const {userName, email, phone, address, pincode, course, branch, semester, rollNumber } = req.body;
+        const { userId,userName, email, phone, address, pincode, course, branch, semester, rollNumber } = req.body;
 
-        if ( !userName || !email || !phone || !address || !pincode || !course || !branch || !semester || !rollNumber) {
+        if (!userId || !userName || !email || !phone || !address || !pincode || !course || !branch || !semester || !rollNumber) {
             return res.status(400).json({ success: false, message: "All fields required" });
         }
 
@@ -15,6 +15,7 @@ export const createProfile = async (req, res) => {
         }
 
         const profile = await profileModel.create({
+            userId,
             userName,
             email,
             phone,
