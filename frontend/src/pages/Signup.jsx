@@ -55,7 +55,7 @@ const Signup = () => {
             const response = await verifyotp(id, otp);
             if (response.success) {
                 alert(`${users.role} Verified successfully`);
-               navigate('/login');
+               navigate('/');
             } else {
                 alert(response.message);
             }
@@ -97,7 +97,7 @@ const Signup = () => {
                     </>
                 }
 
-                <p onClick={() => navigate('/login')}> Already have account? </p>
+                <p onClick={() => navigate('/')}> Already have account? </p>
 
             </form>
 

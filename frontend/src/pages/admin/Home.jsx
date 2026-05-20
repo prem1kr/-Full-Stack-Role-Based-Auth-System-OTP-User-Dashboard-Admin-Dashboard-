@@ -1,66 +1,116 @@
-import React, { useState } from 'react';
-import { addProfile } from '../../hooks/useProfile';
+import React, { useEffect, useState } from 'react';
+import '../../styles/AdminHome.css';
+import AdminSidebar from '../../components/AdminSidebar';
+import { FaBook, FaBuilding, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa';
+import { getAllProfiles } from '../../hooks/useProfile';
 
 const AdminHome = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const userJson = localStorage.getItem('user');
   const user = userJson ? JSON.parse(userJson) : null;
-  const name = user?.userName;
-  const Email = user?.email;
+  const Id = user?.id;
+  const name = user?.userName?.charAt(0).toUpperCase();
+  const [users, setUsers] = useState([]);
 
-  const [userName] = useState(name);
-  const [email] = useState(Email);
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [pincode, setPincode] = useState('');
-  const [course, setCourse] = useState('');
-  const [branch, setBranch] = useState('');
-  const [semester, setSemester] = useState('');
-  const [rollNumber, setRollNumber] = useState('');
-
-
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    const formData = {
-      userName,
-      email,
-      phone,
-      address,
-      pincode,
-      course,
-      branch,
-      semester,
-      rollNumber,
-    };
-
-    try {
-      await addProfile(formData);
-      console.log('Saved', formData);
-      alert('Profile Updated');
-    } catch (err) {
-      console.error('Failed to save profile', err);
-      alert('Failed to update profile');
+  const stats = [
+    {
+      title: 'Students',
+      value: '1,240',
+      icon: <FaUserGraduate />
+    },
+    {
+      title: 'Teachers',
+      value: '85',
+      icon: <FaChalkboardTeacher />
+    },
+    {
+      title: 'Courses',
+      value: '32',
+      icon: <FaBook />
+    },
+    {
+      title: 'Departments',
+      value: '12',
+      icon: <FaBuilding />
     }
-  };
+  ];
+
+
+  useEffect(() => {
+    const fetchAllUserProfile = async () => {
+      const response = await getAllProfiles();
+      if (response.success) {
+        setUsers(response.profiles);
+      } else {
+        alert(response.message)
+      }
+    }
+    fetchAllUserProfile();
+  }, []);
+
 
   return (
-    <div className="container">
+    <div className="dashboard">
+      <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-      <form className="form" onSubmit={handleUpdate}>
-        <h1>Edit Profile</h1>
+      <main className="main-content">
+        <div className="navbar">
 
-        <input type="text" name="userName" value={userName} disabled />
-        <input type="email" name="email" value={email} disabled />
-        <input type="text" name="phone" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-        <textarea name="address" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
-        <input type="text" name="pincode" placeholder="Pincode" value={pincode} onChange={(e) => setPincode(e.target.value)} />
-        <input type="text" name="course" placeholder="Course" value={course} onChange={(e) => setCourse(e.target.value)} />
-        <input type="text" name="branch" placeholder="Branch" value={branch} onChange={(e) => setBranch(e.target.value)} />
-        <input type="number" name="semester" placeholder="Semester" value={semester} onChange={(e) => setSemester(e.target.value)} />
-        <input type="text" name="rollNumber" placeholder="Roll Number" value={rollNumber} onChange={(e) => setRollNumber(e.target.value)} />
+          <div className="nav-left">
+            <button className="menu-btn" onClick={() => setSidebarOpen(true)}> ☰ </button>
+            <h1>Dashboard</h1>
+          </div>
 
-        <button type="submit">Update Profile</button>
-      </form>
+          <div className="admin-info">
+            <span className="admin-avatar">{name}</span>
+          </div>
+
+        </div>
+
+        <div className="cards">
+          {stats.map((item, index) => (
+            <div className="card" key={index}>
+
+              <div className="card-top">
+                <span className="icon">{item.icon}</span>
+                <h3>{item.title}</h3>
+              </div>
+
+              <h2>{item.value}</h2>
+            </div>
+          ))}
+
+        </div>
+
+        <div className="table-container">
+          <h2>Recent Students</h2>
+          <div className="table-wrapper">
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Roll No</th>
+                  <th>Student Name</th>
+                  <th>Course</th>
+                  <th>Year</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {users.map((student, index) => (
+                  <tr key={index}>
+                    <td>{student.rollNumber}</td>
+                    <td>{student.userName}</td>
+                    <td>{student.course}</td>
+                    <td>{student.semester}</td>
+                  </tr>
+                ))}
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

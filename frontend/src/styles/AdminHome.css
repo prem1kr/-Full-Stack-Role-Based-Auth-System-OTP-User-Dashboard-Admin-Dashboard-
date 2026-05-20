@@ -1,0 +1,630 @@
+/* =========================
+   GOOGLE FONT
+========================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* =========================
+   GLOBAL STYLES
+========================= */
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background: #f1f5f9;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+/* =========================
+   DASHBOARD LAYOUT
+========================= */
+
+.dashboard{
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content{
+  flex: 1;
+
+  margin-left: 290px;
+
+  padding: 28px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 24px;
+
+  transition: 0.3s ease;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+  width: 100%;
+
+  background: #ffffff;
+
+  padding: 18px 24px;
+
+  border-radius: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* =========================
+   NAV LEFT
+========================= */
+
+.nav-left{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-left h1{
+  font-size: 28px;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+/* =========================
+   MENU BUTTON
+========================= */
+
+.menu-btn{
+  width: 46px;
+  height: 46px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 14px;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #3b82f6
+  );
+
+  color: white;
+
+  font-size: 20px;
+
+  transition: 0.3s ease;
+}
+
+.menu-btn:hover{
+  transform: scale(1.05);
+}
+
+/* =========================
+   ADMIN INFO
+========================= */
+
+.admin-info{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* =========================
+   ADMIN AVATAR
+========================= */
+
+.admin-avatar{
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #3b82f6
+  );
+
+  color: white;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.25);
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.admin-avatar:hover{
+  transform: scale(1.06);
+}
+
+/* =========================
+   CARDS GRID
+========================= */
+
+.cards{
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(240px, 1fr));
+
+  gap: 22px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+  position: relative;
+
+  background: #ffffff;
+
+  padding: 24px;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, 0.06);
+
+  transition: 0.3s ease;
+}
+
+.card:hover{
+  transform: translateY(-5px);
+}
+
+/* =========================
+   CARD BG EFFECT
+========================= */
+
+.card::before{
+  content: '';
+
+  position: absolute;
+
+  top: -30px;
+  right: -30px;
+
+  width: 120px;
+  height: 120px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(59,130,246,0.12),
+      rgba(59,130,246,0.03)
+    );
+}
+
+/* =========================
+   CARD TOP
+========================= */
+
+.card-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  z-index: 2;
+}
+
+/* =========================
+   CARD TITLE
+========================= */
+
+.card-top h3{
+  font-size: 17px;
+  font-weight: 600;
+
+  color: #334155;
+}
+
+/* =========================
+   CARD ICON
+========================= */
+
+.icon{
+  width: 58px;
+  height: 58px;
+
+  min-width: 58px;
+
+  border-radius: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #3b82f6
+  );
+
+  color: white;
+
+  font-size: 24px;
+
+  box-shadow:
+    0 10px 20px rgba(37, 99, 235, 0.22);
+}
+
+/* =========================
+   CARD VALUE
+========================= */
+
+.card h2{
+  font-size: 34px;
+  font-weight: 700;
+
+  color: #0f172a;
+
+  z-index: 2;
+}
+
+/* =========================
+   TABLE CONTAINER
+========================= */
+
+.table-container{
+  width: 100%;
+
+  background: #ffffff;
+
+  padding: 26px;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* =========================
+   TABLE TITLE
+========================= */
+
+.table-container h2{
+  margin-bottom: 22px;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+/* =========================
+   TABLE WRAPPER
+========================= */
+
+.table-wrapper{
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+table{
+  width: 100%;
+  min-width: 700px;
+
+  border-collapse: collapse;
+}
+
+/* =========================
+   TABLE HEAD
+========================= */
+
+thead{
+  background: #eff6ff;
+}
+
+th{
+  padding: 16px;
+
+  text-align: left;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  color: #1e3a8a;
+}
+
+/* =========================
+   TABLE BODY
+========================= */
+
+td{
+  padding: 16px;
+
+  border-bottom:
+    1px solid #e2e8f0;
+
+  color: #475569;
+
+  font-size: 15px;
+}
+
+tbody tr{
+  transition: 0.3s ease;
+}
+
+tbody tr:hover{
+  background: #f8fafc;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 992px){
+
+  .main-content{
+    margin-left: 0;
+    padding: 22px;
+  }
+
+  .menu-btn{
+    display: flex;
+  }
+
+  .cards{
+    grid-template-columns:
+      repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .nav-left h1{
+    font-size: 24px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px){
+
+  .main-content{
+    padding: 18px;
+    gap: 18px;
+  }
+
+  .navbar{
+    padding: 16px 18px;
+  }
+
+  .nav-left{
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .nav-left h1{
+    font-size: 22px;
+  }
+
+  .cards{
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 16px;
+  }
+
+  .card{
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .card-top{
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 14px;
+  }
+
+  .card h2{
+    font-size: 28px;
+  }
+
+  .icon{
+    width: 52px;
+    height: 52px;
+
+    font-size: 22px;
+  }
+
+  .table-container{
+    padding: 20px;
+  }
+
+  table{
+    min-width: 600px;
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 576px){
+
+  .main-content{
+    padding: 14px;
+  }
+
+  .navbar{
+    padding: 14px 16px;
+
+    border-radius: 18px;
+  }
+
+  .nav-left h1{
+    font-size: 20px;
+  }
+
+  .menu-btn{
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    font-size: 18px;
+  }
+
+  .cards{
+    grid-template-columns: 1fr;
+  }
+
+  .card{
+    padding: 18px;
+
+    gap: 16px;
+  }
+
+  .card::before{
+    width: 90px;
+    height: 90px;
+
+    top: -20px;
+    right: -20px;
+  }
+
+  .card-top{
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 14px;
+  }
+
+  .card-top h3{
+    font-size: 16px;
+  }
+
+  .card h2{
+    font-size: 30px;
+  }
+
+  .icon{
+    width: 48px;
+    height: 48px;
+
+    min-width: 48px;
+
+    border-radius: 14px;
+
+    font-size: 20px;
+  }
+
+  .admin-avatar{
+    width: 42px;
+    height: 42px;
+
+    font-size: 16px;
+  }
+
+  .table-container{
+    padding: 18px;
+
+    border-radius: 18px;
+  }
+
+  .table-container h2{
+    font-size: 20px;
+  }
+
+  table{
+    min-width: 500px;
+  }
+
+  th,
+  td{
+    padding: 13px;
+    font-size: 13px;
+  }
+}
+
+/* =========================
+   EXTRA SMALL DEVICES
+========================= */
+
+@media (max-width: 380px){
+
+  .main-content{
+    padding: 10px;
+  }
+
+  .navbar{
+    padding: 12px 14px;
+  }
+
+  .nav-left h1{
+    font-size: 18px;
+  }
+
+  .card{
+    padding: 16px;
+  }
+
+  .card h2{
+    font-size: 24px;
+  }
+
+  .icon{
+    width: 44px;
+    height: 44px;
+
+    font-size: 18px;
+  }
+
+  .table-container{
+    padding: 14px;
+  }
+}
