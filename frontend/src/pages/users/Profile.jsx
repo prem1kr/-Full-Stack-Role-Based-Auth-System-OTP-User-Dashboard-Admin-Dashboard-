@@ -8,7 +8,7 @@ const Profile = () => {
   const name = user?.userName;
   const Email = user?.email;
   const [profile, setProfile] = useState();
-  const Id = profile?.id;
+  const Id = user?.id;
   console.log(profile);
   const [userName] = useState(name);
   const [email] = useState(Email);
@@ -23,12 +23,12 @@ const Profile = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const formData = { userName, email, phone, address, pincode, course, branch, semester, rollNumber };
+    const formData = {userId:Id, userName, email, phone, address, pincode, course, branch, semester, rollNumber };
     try {
       setLoading(true)
-      const profile = await getProfile(Id);
-      console.log("PROFILE DATA :", profile);
-      if (!profile || !profile.success) {
+      const response = await getProfile(Id);
+      console.log("PROFILE DATA :", response);
+      if (!response || !response.success) {
        const response =  await addProfile(formData);
         setProfile(response.profile);
         alert.log('profile added');
@@ -38,7 +38,6 @@ const Profile = () => {
         await updateProfile(Id,updateData);
         alert('Profile Updated');
       }
-      console.log('Saved', formData);
 
     } catch (err) {
       console.error('Failed to save profile', err);

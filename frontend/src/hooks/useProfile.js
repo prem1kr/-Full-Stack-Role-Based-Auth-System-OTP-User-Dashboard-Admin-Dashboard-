@@ -61,13 +61,3 @@ export const deleteProfile = async (id) => {
         return error.response.data;
     }
 }
-
-
-export const userData = async (email) => {
-    try {
-
-    } catch (error) {
-        console.log(error);
-        return error.response.data;
-    }
-}

@@ -83,7 +83,7 @@ export const updateProfile = async (req, res) => {
             return res.status(404).json({ success: false, message: "Profile not found" });
         }
 
-        const profiles = await findOneAndUpdate({userId:id},{
+        const profiles = await profileModel.findOneAndUpdate({userId:id},{
             phone,
             address,
             pincode,
