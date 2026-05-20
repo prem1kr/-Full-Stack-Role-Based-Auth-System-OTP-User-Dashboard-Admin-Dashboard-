@@ -2,22 +2,20 @@ import profileModel from "../models/profileModel.js";
 
 export const createProfile = async (req, res) => {
     try {
-        const { userName, email, phone, address, pincode, course, branch, semester, rollNumber } = req.body;
+        const { userId,userName, email, phone, address, pincode, course, branch, semester, rollNumber } = req.body;
 
-        if (!userName || !email || !phone || !address || !pincode || !course || !branch || !semester || !rollNumber) {
+        if (!userId || !userName || !email || !phone || !address || !pincode || !course || !branch || !semester || !rollNumber) {
             return res.status(400).json({ success: false, message: "All fields required" });
         }
 
-        const existingProfile = await profileModel.findOne({
-            $or:
-                [{ email }, { rollNumber }]
-        });
+        const existingProfile = await profileModel.findOne({userId});
 
         if (existingProfile) {
             return res.status(409).json({ success: false, message: "Profile already exists" });
         }
 
         const profile = await profileModel.create({
+            userId,
             userName,
             email,
             phone,
@@ -42,7 +40,7 @@ export const createProfile = async (req, res) => {
 export const getAllProfiles = async (req, res) => {
     try {
         const profiles = await profileModel.find();
-        if(!profile){
+        if(!profiles){
             return res.status(404).json({success:false, message:"profile data not found"});
         }
         return res.status(200).json({ success: true, total: profiles.length, profiles });
@@ -58,7 +56,7 @@ export const getAllProfiles = async (req, res) => {
 export const getProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const profile = await profileModel.findById(id);
+        const profile = await profileModel.findOne({userId:id});
 
         if (!profile) {
             return res.status(404).json({ success: false, message: "Profile not found" });
@@ -80,12 +78,12 @@ export const updateProfile = async (req, res) => {
         const { id } = req.params;
         const { phone, address, pincode, course, branch, semester, rollNumber } = req.body;
 
-        const profile = await profileModel.findById(id);
+        const profile = await profileModel.findOne({userId:id});
         if (!profile) {
             return res.status(404).json({ success: false, message: "Profile not found" });
         }
 
-        const profiles = await findByIdAndUpdate(id,{
+        const profiles = await findOneAndUpdate({userId:id},{
             phone,
             address,
             pincode,
@@ -111,12 +109,12 @@ export const updateProfile = async (req, res) => {
 export const deleteProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const profile = await profileModel.findById(id);
+        const profile = await profileModel.findOne({userId:id});
         if (!profile) {
             return res.status(404).json({ success: false, message: "Profile not found" });
         }
 
-        await profileModel.findByIdAndDelete(id);
+        await profileModel.findOneAndDelete({userId:id});
         return res.status(200).json({ success: true, message: "Profile deleted successfully" });
 
     } catch (error) {

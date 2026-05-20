@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { addProfile } from '../../hooks/useProfile';
+import { addProfile, getProfile, updateProfile } from '../../hooks/useProfile';
+import LoadingSpinner from '../../components/Loading.jsx';
 
-const UserHome = () => {
+const Profile = () => {
   const userJson = localStorage.getItem('user');
   const user = userJson ? JSON.parse(userJson) : null;
   const name = user?.userName;
   const Email = user?.email;
-  const Id = user?.id;
-  console.log(Id);
-
+  const [profile, setProfile] = useState();
+  const Id = profile?.id;
+  console.log(profile);
   const [userName] = useState(name);
   const [email] = useState(Email);
   const [phone, setPhone] = useState('');
@@ -18,26 +19,37 @@ const UserHome = () => {
   const [branch, setBranch] = useState('');
   const [semester, setSemester] = useState('');
   const [rollNumber, setRollNumber] = useState('');
+  const [Loading, setLoading] = useState(false)
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     const formData = { userName, email, phone, address, pincode, course, branch, semester, rollNumber };
     try {
-      await addProfile(formData);
+      setLoading(true)
+      const profile = await getProfile(Id);
+      console.log("PROFILE DATA :", profile);
+      if (!profile || !profile.success) {
+       const response =  await addProfile(formData);
+        setProfile(response.profile);
+        alert.log('profile added');
+
+      } else {
+        const updateData = { phone, address, pincode, course, branch, semester, rollNumber }
+        await updateProfile(Id,updateData);
+        alert('Profile Updated');
+      }
       console.log('Saved', formData);
-      alert('Profile Updated');
+
     } catch (err) {
       console.error('Failed to save profile', err);
       alert('Failed to update profile');
+    }finally{
+      setLoading(false);
     }
   };
 
-  
-
-
   return (
     <div className="container">
-
       <form className="form" onSubmit={handleUpdate}>
         <h1>Edit Profile</h1>
 
@@ -51,10 +63,10 @@ const UserHome = () => {
         <input type="number" name="semester" placeholder="Semester" value={semester} onChange={(e) => setSemester(e.target.value)} />
         <input type="text" name="rollNumber" placeholder="Roll Number" value={rollNumber} onChange={(e) => setRollNumber(e.target.value)} />
 
-        <button type="submit">Update Profile</button>
+        {Loading ? <LoadingSpinner/> : <button type="submit">Update Profile</button>}
       </form>
     </div>
   );
 };
 
-export default UserHome;
+export default Profile;

@@ -39,9 +39,9 @@ export const getProfile = async (id) => {
 }
 
 
-export const updateProfile = async (id) => {
+export const updateProfile = async (id,data) => {
     try {
-        const response = await axios.put(`${API_URL}/update-profile/${id}`);
+        const response = await axios.put(`${API_URL}/update-profile/${id}`,data);
         return response.data;
 
     } catch (error) {
@@ -52,6 +52,18 @@ export const updateProfile = async (id) => {
 
 
 export const deleteProfile = async (id) => {
+    try {
+        const response = await axios.delete(`${API_URL}/delete-profile/${id}`);
+        return response.data;
+
+    } catch (error) {
+        console.log(error);
+        return error.response.data;
+    }
+}
+
+
+export const userData = async (email) => {
     try {
 
     } catch (error) {

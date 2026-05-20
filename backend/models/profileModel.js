@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 
 const profileSchema = new mongoose.Schema({
 
+    // IMPORTANT
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'auth',
+        required: true,
+        unique: true
+    },
+
     userName: {
         type: String,
         required: true,
@@ -56,13 +64,8 @@ const profileSchema = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true
-    },
-
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
 
-},{timestamps:true});
+}, { timestamps: true });
 
-export default mongoose.model('profile',profileSchema);
+export default mongoose.model('profile', profileSchema);

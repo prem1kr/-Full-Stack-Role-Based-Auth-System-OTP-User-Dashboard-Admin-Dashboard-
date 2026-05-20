@@ -1,48 +1,65 @@
 import React, { useState } from 'react';
+import { addProfile } from '../../hooks/useProfile';
 
 const AdminHome = () => {
-  const [formData, setFormData] = useState({
-    userName: '',
-    email: '',
-    phone: '',
-    address: '',
-    pincode: '',
-    course: '',
-    branch: '',
-    semester: '',
-    rollNumber: ''
+  const userJson = localStorage.getItem('user');
+  const user = userJson ? JSON.parse(userJson) : null;
+  const name = user?.userName;
+  const Email = user?.email;
 
-  });
+  const [userName] = useState(name);
+  const [email] = useState(Email);
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [course, setCourse] = useState('');
+  const [branch, setBranch] = useState('');
+  const [semester, setSemester] = useState('');
+  const [rollNumber, setRollNumber] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
-  const handleUpdate = (e) => {
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert("Profile Updated");
+    const formData = {
+      userName,
+      email,
+      phone,
+      address,
+      pincode,
+      course,
+      branch,
+      semester,
+      rollNumber,
+    };
+
+    try {
+      await addProfile(formData);
+      console.log('Saved', formData);
+      alert('Profile Updated');
+    } catch (err) {
+      console.error('Failed to save profile', err);
+      alert('Failed to update profile');
+    }
   };
 
   return (
-
     <div className="container">
-      <h1>Admin Home</h1>
 
       <form className="form" onSubmit={handleUpdate}>
         <h1>Edit Profile</h1>
 
-        <input type="text" name="userName" value={formData.userName} disabled />
-        <input type="email" name="email" value={formData.email} disabled />
-        <input type="text" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} />
-        <textarea name="address" placeholder="Address" value={formData.address} onChange={handleChange} />
-        <input type="text" name="pincode" placeholder="Pincode" value={formData.pincode} onChange={handleChange} />
-        <input type="text" name="course" placeholder="Course" value={formData.course} onChange={handleChange} />
-        <input type="text" name="branch" placeholder="Branch" value={formData.branch} onChange={handleChange} />
-        <input type="number" name="semester" placeholder="Semester" value={formData.semester} onChange={handleChange} />
-        <input type="text" name="rollNumber" placeholder="Roll Number" value={formData.rollNumber} onChange={handleChange} />
-        <button type="submit"> Update Profile </button>
+        <input type="text" name="userName" value={userName} disabled />
+        <input type="email" name="email" value={email} disabled />
+        <input type="text" name="phone" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+        <textarea name="address" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
+        <input type="text" name="pincode" placeholder="Pincode" value={pincode} onChange={(e) => setPincode(e.target.value)} />
+        <input type="text" name="course" placeholder="Course" value={course} onChange={(e) => setCourse(e.target.value)} />
+        <input type="text" name="branch" placeholder="Branch" value={branch} onChange={(e) => setBranch(e.target.value)} />
+        <input type="number" name="semester" placeholder="Semester" value={semester} onChange={(e) => setSemester(e.target.value)} />
+        <input type="text" name="rollNumber" placeholder="Roll Number" value={rollNumber} onChange={(e) => setRollNumber(e.target.value)} />
 
+        <button type="submit">Update Profile</button>
       </form>
     </div>
   );

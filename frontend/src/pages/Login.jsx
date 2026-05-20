@@ -23,10 +23,11 @@ const Login = () => {
             const response = await login(data);
             if (response.success) {
                 alert(response.message);
+                localStorage.setItem('user', JSON.stringify(response.user));
                 if (role === 'admin') {
                     navigate('/admin/home');
                 } else {
-                    navigate('/user/home');
+                    navigate('/user/profile');
                 }
 
             } else {
