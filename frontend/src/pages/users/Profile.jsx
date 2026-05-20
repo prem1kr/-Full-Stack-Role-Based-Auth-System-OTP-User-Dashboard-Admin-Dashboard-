@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { addProfile, getProfile, updateProfile } from '../../hooks/useProfile';
 import LoadingSpinner from '../../components/Loading.jsx';
 
 const Profile = () => {
+  const [profileData, setProfileData] = useState();
   const userJson = localStorage.getItem('user');
   const user = userJson ? JSON.parse(userJson) : null;
   const name = user?.userName;
   const Email = user?.email;
   const Id = user?.id;
-  const [userName] = useState(name);
-  const [email] = useState(Email);
+  const [userName] = useState(name || '');
+  const [email] = useState(Email || '');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [pincode, setPincode] = useState('');
@@ -17,18 +18,38 @@ const Profile = () => {
   const [branch, setBranch] = useState('');
   const [semester, setSemester] = useState('');
   const [rollNumber, setRollNumber] = useState('');
-  const [Loading, setLoading] = useState(false)
+  const [Loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!Id) return;
+    const fetchProfile = async () => {
+      const response = await getProfile(Id);
+      setProfileData(response.profile);
+    }
+    fetchProfile();
+  }, [Id]);
+
+  useEffect(() => {
+    if (profileData) {
+      setPhone(profileData.phone || '');
+      setAddress(profileData.address || '');
+      setPincode(profileData.pincode || '');
+      setCourse(profileData.course || '');
+      setBranch(profileData.branch || '');
+      setSemester(profileData.semester || '');
+      setRollNumber(profileData.rollNumber || '');
+    }
+  }, [profileData]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const formData = { userName, email, phone, address, pincode, course, branch, semester, rollNumber };
+    const formData = { userId: Id, userName, email, phone, address, pincode, course, branch, semester, rollNumber };
     try {
       setLoading(true)
-      const response = await getProfile(Id);
-      console.log("PROFILE DATA :", response);
-      if (!response || !response.success) {
+
+      if (!profileData) {
         await addProfile(formData);
-        alert.log('profile added');
+        alert('profile added');
 
       } else {
         const updateData = { phone, address, pincode, course, branch, semester, rollNumber }
