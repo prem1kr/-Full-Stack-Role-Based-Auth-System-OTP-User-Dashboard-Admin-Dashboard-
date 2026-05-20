@@ -9,7 +9,6 @@ const Login = () => {
     const [role, setRole] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [Loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
@@ -18,7 +17,6 @@ const Login = () => {
         if (!validation.success) {
             return alert(validation.message);
         }
-
         try {
             setLoading(true);
             const data = { email, password };

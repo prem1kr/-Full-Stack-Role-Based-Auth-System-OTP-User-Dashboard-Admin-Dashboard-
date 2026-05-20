@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import authRouter from './routes/authRoute.js';
 import cors from "cors";
+import profileRouter from './routes/proflieRoute.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(cors({
 }));
 
 app.use('/api/auth', authRouter);
+app.use('/api/profile', profileRouter);
 
 app.listen(PORT, async () => {
     await connectDB();

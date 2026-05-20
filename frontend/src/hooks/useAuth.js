@@ -60,7 +60,7 @@ export const resetpassword = async (id, password) => {
 
 export const sendotpemail = async (email) => {
     try {
-        const response = await axios.post(`${API_URL}/sendemail-otp`,{email});
+        const response = await axios.post(`${API_URL}/sendemail-otp`, { email });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -71,7 +71,18 @@ export const sendotpemail = async (email) => {
 
 export const verifyotpemail = async (email, otp) => {
     try {
-        const response = await axios.post(`${API_URL}/verifyemail-otp`, {email, otp });
+        const response = await axios.post(`${API_URL}/verifyemail-otp`, { email, otp });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return error.response.data;
+    }
+}
+
+
+export const resetpasswordemail = async (email, password) => {
+    try {
+        const response = await axios.post(`${API_URL}/reset-password-email`, { email, password });
         return response.data;
     } catch (error) {
         console.log(error);
