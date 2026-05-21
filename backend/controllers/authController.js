@@ -62,7 +62,7 @@ export const Login = async (req, res) => {
             return res.status(403).json({ success: false, message: "user not verified" });
         }
 
-        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
 
         const saferData = {
@@ -159,21 +159,21 @@ export const verifyOtp = async (req, res) => {
 export const resetPassword = async (req, res) => {
     try {
         const { id } = req.params;
-        const {password } = req.body;
-        if(!password){
-            return res.status(400).json({success:false, message:"Password filled required"});
+        const { password } = req.body;
+        if (!password) {
+            return res.status(400).json({ success: false, message: "Password filled required" });
         }
 
         const user = await authModel.findById(id);
-        if(!user){
-            return res.status(404).json({success:false, message:"user not found, Signup first"});
+        if (!user) {
+            return res.status(404).json({ success: false, message: "user not found, Signup first" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         user.password = hashedPassword;
         await user.save();
-        
-        return res.status(200).json({success:true, message:"password reset successfull"});
+
+        return res.status(200).json({ success: true, message: "password reset successfull" });
 
     } catch (error) {
         console.log(error);
@@ -186,7 +186,7 @@ export const resetPassword = async (req, res) => {
 export const sendOtpEmail = async (req, res) => {
     try {
         const { email } = req.body;
-        const user = await authModel.findOne({email});
+        const user = await authModel.findOne({ email });
         if (!user) {
             return res.status(404).json({ success: false, message: "user not found" });
         }
@@ -220,7 +220,7 @@ export const verifyOtpemail = async (req, res) => {
             return res.status(400).json({ success: false, message: "OTP required" });
         }
 
-        const user = await authModel.findOne({email});
+        const user = await authModel.findOne({ email });
         if (!user || !user.otp) {
             return res.status(400).json({ success: false, message: "Invalid or expired OTP" });
         }
@@ -260,21 +260,21 @@ export const verifyOtpemail = async (req, res) => {
 
 export const resetPasswordemail = async (req, res) => {
     try {
-        const { email,password} = req.body;
-        if(!password){
-            return res.status(400).json({success:false, message:"Password filled required"});
+        const { email, password } = req.body;
+        if (!password) {
+            return res.status(400).json({ success: false, message: "Password filled required" });
         }
 
-        const user = await authModel.findOne({email});
-        if(!user){
-            return res.status(404).json({success:false, message:"user not found, Signup first"});
+        const user = await authModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: "user not found, Signup first" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         user.password = hashedPassword;
         await user.save();
-        
-        return res.status(200).json({success:true, message:"password reset successfull"});
+
+        return res.status(200).json({ success: true, message: "password reset successfull" });
 
     } catch (error) {
         console.log(error);
@@ -285,36 +285,36 @@ export const resetPasswordemail = async (req, res) => {
 
 
 export const userData = async (req, res) => {
-    try{
-        const {email} = req.body;
-        const user  = await authModel.findOne({email});
-        if(!user){
-            return res.status(404).json({success:false, message:"user not found"});
+    try {
+        const { email } = req.body;
+        const user = await authModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: "user not found" });
         }
         const saferData = {
-            userName : user.userName ,
-            email : user.email
+            userName: user.userName,
+            email: user.email
         }
 
-        return res.status(200).json({success:true, message:"user fetched successfully", user:saferData});
+        return res.status(200).json({ success: true, message: "user fetched successfully", user: saferData });
 
-    }catch(error){
+    } catch (error) {
         console.log(error);
         return res.status(500).json({ success: false, message: "Server Error", error: error.message });
     }
 }
 
 
-export const AllUser = async(req, res) => {
-    try{
+export const AllUser = async (req, res) => {
+    try {
         const users = await authModel.find();
-        if(!users){
-            return res.status(404).json({success:false, message:"users not found"});
+        if (!users) {
+            return res.status(404).json({ success: false, message: "users not found" });
         }
-        return res.status(200).json({success:true, message:"users fetched successfully", users});
+        return res.status(200).json({ success: true, message: "users fetched successfully", users });
 
-    }catch(error){
+    } catch (error) {
         console.log(error);
-        return res.status(500).json({success:false, message:"Server Error", error:error.message})
+        return res.status(500).json({ success: false, message: "Server Error", error: error.message })
     }
 }
