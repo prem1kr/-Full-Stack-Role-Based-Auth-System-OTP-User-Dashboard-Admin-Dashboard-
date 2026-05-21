@@ -1,10 +1,9 @@
-import axios from "axios";
 import API_URL from "./api.js";
 
 
 export const addProfile = async (data) => {
     try {
-        const response = await axios.post(`${API_URL}/profile/add-profile`, data);
+        const response = await API_URL.post(`/profile/add-profile`, data);
         return response.data;
 
     } catch (error) {
@@ -16,7 +15,7 @@ export const addProfile = async (data) => {
 
 export const getAllProfiles = async () => {
     try {
-        const response = await axios.get(`${API_URL}/profile/all-profile`);
+        const response = await API_URL.get(`/profile/all-profile`);
         return response.data;
 
     } catch (error) {
@@ -28,7 +27,7 @@ export const getAllProfiles = async () => {
 
 export const getProfile = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/profile/get-profile/${id}`);
+        const response = await API_URL.get(`/profile/get-profile/${id}`);
         return response.data;
 
     } catch (error) {
@@ -40,7 +39,7 @@ export const getProfile = async (id) => {
 
 export const updateProfile = async (id,data) => {
     try {
-        const response = await axios.put(`${API_URL}/profile/update-profile/${id}`,data);
+        const response = await API_URL.put(`/profile/update-profile/${id}`,data);
         return response.data;
 
     } catch (error) {
@@ -52,7 +51,7 @@ export const updateProfile = async (id,data) => {
 
 export const deleteProfile = async (id) => {
     try {
-        const response = await axios.delete(`${API_URL}/profile/delete-profile/${id}`);
+        const response = await API_URL.delete(`/profile/delete-profile/${id}`);
         return response.data;
 
     } catch (error) {
