@@ -6,11 +6,7 @@ dotenv.config();
 export const adminAuth = async (req, res, next) => {
     try {
 
-        console.log("cookies:", req.cookies);
-
-        const token = req.cookies.token;
-
-        console.log("token:", token);
+        const token = req.headers.authorization?.split(" ")[1];
 
         if (!token) {
             return res.status(401).json({
@@ -20,8 +16,6 @@ export const adminAuth = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        console.log("decoded:", decoded);
 
         if (decoded.role !== "admin") {
             return res.status(403).json({
@@ -35,6 +29,7 @@ export const adminAuth = async (req, res, next) => {
         next();
 
     } catch (error) {
+
 
         console.log(error);
 

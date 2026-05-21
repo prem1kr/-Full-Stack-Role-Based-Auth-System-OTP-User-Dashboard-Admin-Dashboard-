@@ -23,7 +23,8 @@ const Login = () => {
             const response = await login(data);
             if (response.success) {
                 alert(response.message);
-                localStorage.setItem('user', JSON.stringify(response.user));
+                localStorage.setItem("user", JSON.stringify(response.user));
+                localStorage.setItem("token", response.token);
                 if (response.user.role === 'admin') {
                     navigate('/admin/home');
                 } else {
