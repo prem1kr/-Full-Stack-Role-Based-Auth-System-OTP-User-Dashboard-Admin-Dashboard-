@@ -6,16 +6,24 @@ dotenv.config();
 export const adminAuth = async (req, res, next) => {
     try {
 
-        const token = req.headers.authorization?.split(" ")[1];
+        const authHeader = req.headers.authorization;
 
-        if (!token) {
+        console.log(authHeader);
+
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return res.status(401).json({
                 success: false,
-                message: "No token found"
+                message: "No token provided"
             });
         }
 
+        const token = authHeader.split(" ")[1];
+
+        console.log(token);
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        console.log(decoded);
 
         if (decoded.role !== "admin") {
             return res.status(403).json({
@@ -29,7 +37,6 @@ export const adminAuth = async (req, res, next) => {
         next();
 
     } catch (error) {
-
 
         console.log(error);
 
