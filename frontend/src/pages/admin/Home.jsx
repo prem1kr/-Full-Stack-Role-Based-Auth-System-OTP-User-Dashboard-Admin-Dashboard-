@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/AdminHome.css';
-import AdminSidebar from '../../components/AdminSidebar';
+import AdminSidebar from '../../components/AdminSidebar.jsx';
 import { FaBook, FaBuilding, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa';
-import { getAllProfiles } from '../../hooks/useProfile';
-import { getAllUser } from '../../hooks/useAuth';
+import { getAllProfiles } from '../../hooks/useProfile.js';
+import { getAllUser } from '../../hooks/useAuth.js';
 
 const AdminHome = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -25,6 +25,15 @@ const AdminHome = () => {
   }, {});
   const totalCourses = Object.keys(courseStats).length;
 
+    const departmentStart = allUsers.reduce((acc, user) => {
+    const department = user.branch;
+    if (department) {
+      acc[department] = (acc[department] || 0) + 1;
+    }
+    return acc;
+  }, {});
+  const totalDepartment = Object.keys(departmentStart).length;
+
   const stats = [
     {
       title: 'Students',
@@ -43,7 +52,7 @@ const AdminHome = () => {
     },
     {
       title: 'Departments',
-      value: '12',
+      value: totalDepartment,
       icon: <FaBuilding />
     }
   ];
@@ -72,7 +81,6 @@ const AdminHome = () => {
     }
     getAllUsers();
   }, [])
-
 
 
   return (
@@ -118,7 +126,7 @@ const AdminHome = () => {
                   <th>Roll No</th>
                   <th>Student Name</th>
                   <th>Course</th>
-                  <th>Year</th>
+                  <th>Semester</th>
                 </tr>
               </thead>
 

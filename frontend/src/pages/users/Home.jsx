@@ -1,60 +1,87 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../styles/UserHome.css';
-import AdminSidebar from '../../components/UserSidebar';
+import AdminSidebar from '../../components/UserSidebar.jsx';
 import { FaBook, FaBuilding, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa';
+import { getAllProfiles } from '../../hooks/useProfile.js';
+import { getAllUser } from '../../hooks/useAuth.js';
 
 const UserHome = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const userJson = localStorage.getItem('user');
+  const user = userJson ? JSON.parse(userJson) : null;
+  const Id = user?.id;
+  const name = user?.userName?.charAt(0).toUpperCase();
+  const [TotalUsers, setTotalUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const adminCount = TotalUsers.filter((user) => user.role === 'admin').length;
+  const userCount = TotalUsers.filter((user) => user.role === 'user').length;
+
+  const courseStats = allUsers.reduce((acc, user) => {
+    const course = user.course;
+    if (course) {
+      acc[course] = (acc[course] || 0) + 1;
+    }
+    return acc;
+  }, {});
+  const totalCourses = Object.keys(courseStats).length;
+
+  const departmentStart = allUsers.reduce((acc, user) => {
+    const department = user.branch;
+    if (department) {
+      acc[department] = (acc[department] || 0) + 1;
+    }
+    return acc;
+  }, {});
+  const totalDepartment = Object.keys(departmentStart).length;
 
   const stats = [
     {
       title: 'Students',
-      value: '1,240',
-      icon: <FaUserGraduate/>
+      value: userCount,
+      icon: <FaUserGraduate />
     },
     {
       title: 'Teachers',
-      value: '85',
-      icon: <FaChalkboardTeacher/>
+      value: adminCount,
+      icon: <FaChalkboardTeacher />
     },
     {
       title: 'Courses',
-      value: '32',
-      icon: <FaBook/>
+      value: totalCourses,
+      icon: <FaBook />
     },
     {
       title: 'Departments',
-      value: '12',
-      icon: <FaBuilding/>
+      value: totalDepartment,
+      icon: <FaBuilding />
     }
   ];
 
-  const students = [
-    {
-      roll: '101',
-      name: 'Prem Kumar',
-      course: 'B.Tech ECE',
-      year: '3rd Year'
-    },
-    {
-      roll: '102',
-      name: 'Rahul Sharma',
-      course: 'BCA',
-      year: '2nd Year'
-    },
-    {
-      roll: '103',
-      name: 'Anjali',
-      course: 'MBA',
-      year: '1st Year'
-    },
-    {
-      roll: '104',
-      name: 'Aman',
-      course: 'B.Tech CSE',
-      year: '4th Year'
+
+  useEffect(() => {
+    const fetchAllUserProfile = async () => {
+      const response = await getAllProfiles();
+      if (response.success) {
+        setAllUsers(response.profiles);
+      } else {
+        alert(response.message)
+      }
     }
-  ];
+    fetchAllUserProfile();
+  }, []);
+
+  useEffect(() => {
+    const getAllUsers = async () => {
+      const response = await getAllUser();
+      if (response.success) {
+        setTotalUsers(response.users);
+      } else {
+        alert(response.message);
+      }
+    }
+    getAllUsers();
+  }, [])
+
 
   return (
     <div className="dashboard">
@@ -69,7 +96,7 @@ const UserHome = () => {
           </div>
 
           <div className="admin-info">
-            <img src="https://i.pravatar.cc/40" alt="admin" />
+            <span className="admin-avatar">{name}</span>
           </div>
 
         </div>
@@ -99,17 +126,17 @@ const UserHome = () => {
                   <th>Roll No</th>
                   <th>Student Name</th>
                   <th>Course</th>
-                  <th>Year</th>
+                  <th>Semester</th>
                 </tr>
               </thead>
 
               <tbody>
-                {students.map((student, index) => (
+                {allUsers.map((student, index) => (
                   <tr key={index}>
-                    <td>{student.roll}</td>
-                    <td>{student.name}</td>
+                    <td>{student.rollNumber}</td>
+                    <td>{student.userName}</td>
                     <td>{student.course}</td>
-                    <td>{student.year}</td>
+                    <td>{student.semester}</td>
                   </tr>
                 ))}
               </tbody>
