@@ -24,10 +24,10 @@ const Login = () => {
             if (response.success) {
                 alert(response.message);
                 localStorage.setItem('user', JSON.stringify(response.user));
-                if (role === 'admin') {
+                if (response.user.role === 'admin') {
                     navigate('/admin/home');
                 } else {
-                    navigate('/user/profile');
+                    navigate('/user/home');
                 }
 
             } else {

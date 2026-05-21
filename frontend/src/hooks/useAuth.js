@@ -1,10 +1,9 @@
 import axios from "axios";
-
-const API_URL = 'https://smtp-role-based-and-otp-verification.onrender.com/api/auth';
+import API_URL from "./api.js";
 
 export const signup = async (data) => {
     try {
-        const response = await axios.post(`${API_URL}/signup`, data);
+        const response = await axios.post(`${API_URL}/auth/signup`, data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -15,7 +14,7 @@ export const signup = async (data) => {
 
 export const login = async (data) => {
     try {
-        const response = await axios.post(`${API_URL}/login`, data);
+        const response = await axios.post(`${API_URL}/auth/login`, data);
         return response.data;
 
     } catch (error) {
@@ -27,7 +26,7 @@ export const login = async (data) => {
 
 export const sendotp = async (id) => {
     try {
-        const response = await axios.post(`${API_URL}/send-otp/${id}`);
+        const response = await axios.post(`${API_URL}/auth/send-otp/${id}`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -38,7 +37,7 @@ export const sendotp = async (id) => {
 
 export const verifyotp = async (id, otp) => {
     try {
-        const response = await axios.post(`${API_URL}/verify-otp/${id}`, { otp });
+        const response = await axios.post(`${API_URL}/auth/verify-otp/${id}`, { otp });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -49,7 +48,7 @@ export const verifyotp = async (id, otp) => {
 
 export const resetpassword = async (id, password) => {
     try {
-        const response = await axios.post(`${API_URL}/reset-password/${id}`, { password });
+        const response = await axios.post(`${API_URL}/auth/reset-password/${id}`, { password });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -60,7 +59,7 @@ export const resetpassword = async (id, password) => {
 
 export const sendotpemail = async (email) => {
     try {
-        const response = await axios.post(`${API_URL}/sendemail-otp`, { email });
+        const response = await axios.post(`${API_URL}/auth/sendemail-otp`, { email });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -71,7 +70,7 @@ export const sendotpemail = async (email) => {
 
 export const verifyotpemail = async (email, otp) => {
     try {
-        const response = await axios.post(`${API_URL}/verifyemail-otp`, { email, otp });
+        const response = await axios.post(`${API_URL}/auth/verifyemail-otp`, { email, otp });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -82,7 +81,7 @@ export const verifyotpemail = async (email, otp) => {
 
 export const resetpasswordemail = async (email, password) => {
     try {
-        const response = await axios.post(`${API_URL}/reset-password-email`, { email, password });
+        const response = await axios.post(`${API_URL}/auth/reset-password-email`, { email, password });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -93,7 +92,7 @@ export const resetpasswordemail = async (email, password) => {
 
 export const userData = async (email) => {
     try {
-        const response = await axios.get(`${API_URL}/userData`, email)
+        const response = await axios.get(`${API_URL}/auth/userData`, email)
         return response.data;
     } catch (error) {
         console.log(error);
@@ -104,7 +103,7 @@ export const userData = async (email) => {
 
 export const getAllUser = async () => {
     try {
-        const response = await axios.get(`${API_URL}/all-users`);
+        const response = await axios.get(`${API_URL}/auth/all-users`);
         return response.data;
     } catch (error) {
         console.log(error);
