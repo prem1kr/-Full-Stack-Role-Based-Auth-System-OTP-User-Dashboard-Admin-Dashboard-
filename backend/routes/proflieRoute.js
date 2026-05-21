@@ -8,6 +8,6 @@ profileRouter.post('/add-profile',createProfile );
 profileRouter.get('/all-profile', adminAuth, getAllProfiles);
 profileRouter.get("/get-profile/:id", getProfile);
 profileRouter.put("/update-profile/:id", updateProfile);
-profileRouter.delete("/delete-profile/:id", adminAuth, deleteProfile);
+profileRouter.delete("/delete-profile/:id", deleteProfile);
 
 export default profileRouter;
