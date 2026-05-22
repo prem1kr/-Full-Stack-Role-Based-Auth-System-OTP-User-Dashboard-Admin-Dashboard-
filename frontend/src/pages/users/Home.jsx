@@ -72,6 +72,10 @@ const UserHome = () => {
       }
     }
   };
+  const handleClose = async () => {
+    await fetchProfile();
+    setShowEdit(false);
+};
 
   return (
     <div className="user-dashboard-wrapper">
@@ -147,7 +151,7 @@ const UserHome = () => {
         {showEdit && (
           <div className="modal-overlay">
             <div >
-              <button className="close-btn" onClick={async () => { await fetchProfile(); setShowEdit(false); }} >X</button>
+              <button className="close-btn" onClick={handleClose} >X</button>
               <Profile profile={profile} setProfile={setProfile} />
             </div>
           </div>
