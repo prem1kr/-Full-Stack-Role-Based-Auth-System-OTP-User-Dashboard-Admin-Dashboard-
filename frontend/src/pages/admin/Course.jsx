@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "../../styles/course/Course.css";
 import AdminSidebar from "../../components/AdminSidebar.jsx";
 import { FaBook } from "react-icons/fa";
-
 import { getAllProfiles } from "../../hooks/useProfile.js";
 
 const Course = () => {
@@ -26,17 +25,14 @@ const Course = () => {
         fetchAllUserProfile();
     }, []);
 
-    // Course Statistics
     const courseStats = allProfiles.reduce((acc, student) => {
         const course = student.course;
         if (course) { acc[course] = (acc[course] || 0) + 1; }
         return acc;
     }, {});
 
-    // Filter Buttons
     const courses = ["All", ...Object.keys(courseStats)];
 
-    // Filter Handler
     const handleFilter = (course) => {
         setSelectedCourse(course);
         if (course === "All") {
