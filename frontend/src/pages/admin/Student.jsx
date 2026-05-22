@@ -11,15 +11,16 @@ const StudentsPage = () => {
     const name = user?.userName?.split(" ").map(n => n.charAt(0).toUpperCase()).join("");
 
 
-    useEffect(() => {
-        const fetchAllUserProfile = async () => {
-            const response = await getAllProfiles();
-            if (response.success) {
-                setAllProfiles(response.profiles);
-            } else {
-                alert(response.message)
-            }
+    const fetchAllUserProfile = async () => {
+        const response = await getAllProfiles();
+        if (response.success) {
+            setAllProfiles(response.profiles);
+        } else {
+            alert(response.message)
         }
+    }
+
+    useEffect(() => {
         fetchAllUserProfile();
     }, []);
 
@@ -29,7 +30,7 @@ const StudentsPage = () => {
         if (confirmDelete) {
             const response = await deleteProfile(id);
             if (response.success) {
-                setAllProfiles(response.profiles);
+                fetchAllUserProfile();
             }
         }
     };

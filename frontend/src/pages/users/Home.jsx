@@ -49,8 +49,7 @@ const UserHome = () => {
     }
   ];
 
-  useEffect(() => {
-    if (!Id) return;
+ 
     const fetchProfile = async () => {
       try {
         const response = await getProfile(Id);
@@ -59,15 +58,17 @@ const UserHome = () => {
         console.error('Fetch profile failed', err);
       }
     };
-    fetchProfile();
-  }, [Id]);
+  
+    useEffect(()=> {
+      fetchProfile();
+    },[]);
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this student?");
     if (confirmDelete) {
       const response = await deleteProfile(Id);
       if (response.success) {
-        setProfile(response.profiles);
+        fetchProfile();
       }
     }
   };
