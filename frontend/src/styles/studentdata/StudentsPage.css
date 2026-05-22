@@ -1,6 +1,4 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
 
 * {
   margin: 0;
@@ -15,22 +13,18 @@ body {
   color: #0f172a;
 }
 
-
 .dashboard {
   display: flex;
   min-height: 100vh;
 }
 
-
 .main-content {
   flex: 1;
   margin-left: 270px;
   padding: 24px;
-
   display: flex;
   flex-direction: column;
   gap: 20px;
-
   transition: 0.3s ease;
 }
 
@@ -38,14 +32,11 @@ body {
 .navbar {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
-
   padding: 16px 20px;
   border-radius: 18px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
 }
 
@@ -67,14 +58,10 @@ body {
   height: 44px;
   border: none;
   border-radius: 12px;
-
   cursor: pointer;
-
   background: linear-gradient(135deg, #2563eb, #3b82f6);
   color: white;
-
   font-size: 18px;
-
   display: none;
 }
 
@@ -82,19 +69,14 @@ body {
 .admin-avatar {
   width: 44px;
   height: 44px;
-
   border-radius: 50%;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: linear-gradient(135deg, #2563eb, #3b82f6);
-
   color: white;
   font-weight: 600;
   font-size: 16px;
-
   box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
 }
 
@@ -103,7 +85,6 @@ body {
   background: white;
   padding: 18px 22px;
   border-radius: 18px;
-
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
 }
 
@@ -123,9 +104,7 @@ body {
   background: white;
   padding: 22px;
   border-radius: 18px;
-
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-
   border: 1px solid #eef2ff;
 }
 
@@ -133,7 +112,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 16px;
 }
 
@@ -145,10 +123,8 @@ body {
 .table-title span {
   background: #e0f2fe;
   color: #0369a1;
-
   padding: 6px 12px;
   border-radius: 999px;
-
   font-size: 13px;
   font-weight: 500;
 }
@@ -171,7 +147,6 @@ thead {
 th {
   padding: 14px;
   text-align: left;
-
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -183,7 +158,6 @@ td {
   padding: 14px;
   font-size: 14px;
   color: #475569;
-
   border-bottom: 1px solid #eef2ff;
 }
 
@@ -200,14 +174,10 @@ tbody tr:hover {
 .delete-btn {
   background: transparent;
   border: none;
-
   cursor: pointer;
-
   color: #ef4444;
-
   padding: 6px;
   border-radius: 8px;
-
   transition: 0.2s;
 }
 
@@ -226,16 +196,11 @@ tbody tr:hover {
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 14px 16px;
   margin: 6px 10px;
-
   border-radius: 12px;
-
   cursor: pointer;
-
   color: #334155;
-
   transition: 0.2s;
 }
 

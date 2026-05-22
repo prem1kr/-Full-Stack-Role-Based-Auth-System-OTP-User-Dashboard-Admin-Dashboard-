@@ -3,17 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { validateLogin } from '../utils/loginValidation.js';
 import { login } from '../hooks/useAuth.js';
 import LoadingSpinner from '../components/Loading.jsx';
+import '../styles/login/login.css'
 
 const Login = () => {
     const navigate = useNavigate();
-    const [role, setRole] = useState('');
+    // const [role, setRole] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [Loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const validation = validateLogin({ email, password, role });
+        const validation = validateLogin({ email, password });
         if (!validation.success) {
             return alert(validation.message);
         }
@@ -46,26 +47,18 @@ const Login = () => {
 
     return (
 
-        <div className="container">
-            <form className="form" onSubmit={handleLogin} >
-                <h1>Login</h1>
+        <div className="auth-page">
+            <form className="auth-card" onSubmit={handleLogin}>
+                <h1 className="auth-title">Login</h1>
 
-                <select value={role} onChange={(e) => setRole(e.target.value)}>
-                    <option value=""> Select Role  </option>
-                    <option value="user"> User </option>
-                    <option value="admin">  Admin</option>
-                </select>
+                <input className="auth-input" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input className="auth-input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <p className="auth-link" onClick={() => navigate('/forgot-password')}> Forgot Password </p>
 
-                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <p onClick={() => navigate('/forgot-password')}> Forgot Password </p>
-
-                {Loading ? <LoadingSpinner /> : <button type="submit"> Login </button>}
-
-                <p onClick={() => navigate('/signup')}> Create Account </p>
+                {Loading ? <LoadingSpinner /> : <button className="auth-btn" type="submit">  Login </button>}
+                <p className="auth-link" onClick={() => navigate('/signup')}> Create Account </p>
 
             </form>
-
         </div>
     );
 };

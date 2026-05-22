@@ -1,4 +1,4 @@
-export const validateLogin = ({ name, email, password, role }) => {
+export const validateLogin = ({ email, password, }) => {
 
     // Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,10 +19,5 @@ export const validateLogin = ({ name, email, password, role }) => {
         return { success: false, message: "Password must be at least 6 characters" };
     }
 
-
-    // Role
-    if (!role) {
-        return { success: false, message: "Role is required" };
-    }
     return { success: true };
 };

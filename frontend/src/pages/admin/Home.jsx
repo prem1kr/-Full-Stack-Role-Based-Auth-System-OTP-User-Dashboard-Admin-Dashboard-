@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../../styles/AdminHome.css';
+import '../../styles/adminDashboard/AdminHome.css';
 import AdminSidebar from '../../components/AdminSidebar.jsx';
 import { FaBook, FaBuilding, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa';
 import { getAllProfiles } from '../../hooks/useProfile.js';
@@ -9,8 +9,7 @@ const AdminHome = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const userJson = localStorage.getItem('user');
   const user = userJson ? JSON.parse(userJson) : null;
-  const Id = user?.id;
-  const name = user?.userName?.charAt(0).toUpperCase();
+  const name = user?.userName?.split(" ").map(n => n.charAt(0).toUpperCase()).join("");
   const [TotalUsers, setTotalUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const adminCount = TotalUsers.filter((user) => user.role === 'admin').length;
@@ -143,6 +142,7 @@ const AdminHome = () => {
 
             </table>
           </div>
+          
         </div>
       </main>
     </div>

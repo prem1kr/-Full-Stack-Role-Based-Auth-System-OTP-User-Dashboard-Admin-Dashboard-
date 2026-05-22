@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* =========================
+   MODAL BACKDROP
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    backdrop-filter: blur(6px);
+}
+
+/* =========================
+   MODAL BOX
+========================= */
+.container {
+    width: 100%;
+    max-width: 750px;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form {
+    width: 100%;
+    background: white;
+    padding: 35px;
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+    display: grid;
+    grid-template-columns: 1fr 1fr;   /* 👈 2 COLUMN */
+    gap: 18px;
+    position: relative;
+    overflow: hidden;
+    animation: popup 0.25s ease-in-out;
+}
+
+/* popup animation */
+@keyframes popup {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* decorative bubble */
+.form::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 180px;
+    height: 180px;
+    background: linear-gradient(135deg,
+            rgba(59, 130, 246, 0.15),
+            rgba(37, 99, 235, 0.02));
+    border-radius: 50%;
+}
+
+/* full width elements */
+.form h1,
+.form button {
+    grid-column: span 2;
+}
+
+.form h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 5px;
+}
+
+/* inputs */
+.form input,
+.form textarea,
+.form select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #dbe2ea;
+    border-radius: 14px;
+    outline: none;
+    font-size: 14px;
+    background: #f8fafc;
+    transition: 0.3s ease;
+}
+
+.form textarea {
+    min-height: 110px;
+    resize: none;
+}
+
+/* focus */
+.form input:focus,
+.form textarea:focus,
+.form select:focus {
+    border-color: #2563eb;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+/* disabled */
+.form input:disabled {
+    background: #e2e8f0;
+    color: #64748b;
+}
+
+/* button */
+.form button {
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(37, 99, 235, 0.3);
+}
+
+.action-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-icon,
+.delete-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.edit-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.edit-icon:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.delete-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.delete-icon:hover {
+    background: #dc2626;
+    color: white;
+}
+
+
+
+@media (max-width: 768px) {
+    .form {
+        grid-template-columns: 1fr;
+        padding: 25px;
+    }
+
+    .form h1,
+    .form button {
+        grid-column: span 1;
+    }
+}

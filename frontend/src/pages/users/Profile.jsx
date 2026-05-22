@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { addProfile, getProfile, updateProfile } from '../../hooks/useProfile';
 import LoadingSpinner from '../../components/Loading.jsx';
+import '../../styles/profile/profile.css'
 
 const Profile = () => {
   const [profileData, setProfileData] = useState(null);
@@ -82,9 +83,9 @@ const Profile = () => {
 
   return (
     <div className="container">
+  
       <form className="form" onSubmit={handleUpdate}>
         <h1>Edit Profile</h1>
-
         <input value={userName} disabled />
         <input value={email} disabled />
 

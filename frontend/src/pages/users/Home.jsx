@@ -1,151 +1,159 @@
 import React, { useEffect, useState } from 'react';
-import '../../styles/UserHome.css';
-import AdminSidebar from '../../components/UserSidebar.jsx';
-import { FaBook, FaBuilding, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa';
-import { getAllProfiles } from '../../hooks/useProfile.js';
-import { getAllUser } from '../../hooks/useAuth.js';
+import '../../styles/userDashboard/UserHome.css';
+import { FaBook, FaBuilding, FaUserGraduate, FaIdCard } from 'react-icons/fa';
+import { deleteProfile, getProfile } from '../../hooks/useProfile.js';
+import { useNavigate } from 'react-router-dom';
+import { Edit, Trash2 } from 'lucide-react';
+import Profile from './Profile.jsx';
 
 const UserHome = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const userJson = localStorage.getItem('user');
-  const user = userJson ? JSON.parse(userJson) : null;
+  const [showEdit, setShowEdit] = useState(false);
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+  const user = JSON.parse(localStorage.getItem('user')) || {};
   const Id = user?.id;
-  const name = user?.userName?.charAt(0).toUpperCase();
-  const [TotalUsers, setTotalUsers] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
-  const adminCount = TotalUsers.filter((user) => user.role === 'admin').length;
-  const userCount = TotalUsers.filter((user) => user.role === 'user').length;
-
-  const courseStats = allUsers.reduce((acc, user) => {
-    const course = user.course;
-    if (course) {
-      acc[course] = (acc[course] || 0) + 1;
+  const name = user?.userName?.split(" ").map(n => n.charAt(0).toUpperCase()).join("");
+  const handleLogout = () => {
+    const confirmLogout = window.confirm('Are you sure you want to logout?');
+    if (confirmLogout) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      navigate('/');
     }
-    return acc;
-  }, {});
-  const totalCourses = Object.keys(courseStats).length;
+  };
 
-  const departmentStart = allUsers.reduce((acc, user) => {
-    const department = user.branch;
-    if (department) {
-      acc[department] = (acc[department] || 0) + 1;
-    }
-    return acc;
-  }, {});
-  const totalDepartment = Object.keys(departmentStart).length;
 
-  const stats = [
+  const dashboardStats = [
     {
-      title: 'Students',
-      value: userCount,
-      icon: <FaUserGraduate />
-    },
-    {
-      title: 'Teachers',
-      value: adminCount,
-      icon: <FaChalkboardTeacher />
-    },
-    {
-      title: 'Courses',
-      value: totalCourses,
+      title: 'Course',
+      value: profile?.course || '0',
       icon: <FaBook />
     },
+
     {
-      title: 'Departments',
-      value: totalDepartment,
+      title: 'Department',
+      value: profile?.branch || '0',
       icon: <FaBuilding />
+    },
+
+    {
+      title: 'Semester',
+      value: profile?.semester || '0',
+      icon: <FaUserGraduate />
+    },
+
+    {
+      title: 'Roll Number',
+      value: profile?.rollNumber || '0',
+      icon: <FaIdCard />
     }
   ];
 
-
   useEffect(() => {
-    const fetchAllUserProfile = async () => {
-      const response = await getAllProfiles();
+    if (!Id) return;
+    const fetchProfile = async () => {
+      try {
+        const response = await getProfile(Id);
+        setProfile(response.profile);
+      } catch (err) {
+        console.error('Fetch profile failed', err);
+      }
+    };
+    fetchProfile();
+  }, [Id]);
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this student?");
+    if (confirmDelete) {
+      const response = await deleteProfile(Id);
       if (response.success) {
-        setAllUsers(response.profiles);
-      } else {
-        alert(response.message)
+        setProfile(response.profiles);
       }
     }
-    fetchAllUserProfile();
-  }, []);
-
-  useEffect(() => {
-    const getAllUsers = async () => {
-      const response = await getAllUser();
-      if (response.success) {
-        setTotalUsers(response.users);
-      } else {
-        alert(response.message);
-      }
-    }
-    getAllUsers();
-  }, [])
-
+  };
 
   return (
-    <div className="dashboard">
-      <AdminSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+    <div className="user-dashboard-wrapper">
+      <main className="user-dashboard-main">
 
-      <main className="main-content">
-        <div className="navbar">
-
-          <div className="nav-left">
-            <button className="menu-btn" onClick={() => setSidebarOpen(true)}> ☰ </button>
-            <h1>Dashboard</h1>
+        <div className="user-dashboard-header">
+          <div className="user-dashboard-title">
+            <h1>User Dashboard</h1>
           </div>
-
-          <div className="admin-info">
-            <span className="admin-avatar">{name}</span>
+          <div className="user-dashboard-user-section">
+            <button className="user-dashboard-logout-btn" onClick={handleLogout}>  Logout </button>
+            {!profile ? <button onClick={() => setShowEdit(true)} className='add-profile-btn'> Add Profile </button> : <span className="user-dashboard-avatar">{name}</span>}
           </div>
-
         </div>
 
-        <div className="cards">
-          {stats.map((item, index) => (
-            <div className="card" key={index}>
+        <div className="user-dashboard-cards-grid">
+          {dashboardStats.map((item, key) => (
+            <div className="user-dashboard-card" key={key}>
 
-              <div className="card-top">
-                <span className="icon">{item.icon}</span>
+              <div className="user-dashboard-card-top">
+                <span className="user-dashboard-card-icon">{item.icon}</span>
                 <h3>{item.title}</h3>
               </div>
 
               <h2>{item.value}</h2>
             </div>
           ))}
-
         </div>
 
-        <div className="table-container">
-          <h2>Recent Students</h2>
-          <div className="table-wrapper">
-            <table>
 
-              <thead>
+        <div className="table-wrapper">
+          <table>
+
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Roll No</th>
+                <th>Student Name</th>
+                <th>Course</th>
+                <th>Semester</th>
+                <th>Update</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {profile ? (
                 <tr>
-                  <th>Roll No</th>
-                  <th>Student Name</th>
-                  <th>Course</th>
-                  <th>Semester</th>
+                  <td>{profile.userName}</td>
+                  <td>{profile.rollNumber}</td>
+                  <td>{profile.userName}</td>
+                  <td>{profile.course}</td>
+                  <td>{profile.semester}</td>
+
+                  <td>
+                    <button className="edit-btn" onClick={() => setShowEdit(true)}> <Edit size={18} /></button>
+                  </td>
+                  <td>
+                    <button className="delete-btn" onClick={() => handleDelete(profile.userId)} > <Trash2 size={18} />  </button>
+                  </td>
                 </tr>
-              </thead>
 
-              <tbody>
-                {allUsers.map((student, index) => (
-                  <tr key={index}>
-                    <td>{student.rollNumber}</td>
-                    <td>{student.userName}</td>
-                    <td>{student.course}</td>
-                    <td>{student.semester}</td>
-                  </tr>
-                ))}
-              </tbody>
+              ) : (
+                <tr>
+                  <td colSpan="5" className="no-data">  No students found </td>
+                </tr>
+              )}
+            </tbody>
 
-            </table>
-          </div>
+          </table>
         </div>
-      </main>
-    </div>
+
+        {showEdit && (
+          <div className="modal-overlay">
+            <div >
+              <button className="close-btn" onClick={() => setShowEdit(false)}> X </button>
+              <Profile profile={profile} setProfile={setProfile} />
+            </div>
+          </div>
+        )}
+
+      </main >
+    </div >
   );
 };
 

@@ -1,34 +1,36 @@
 import React, { useEffect, useState } from "react";
-import "../../styles/StudentsPage.css";
-import "../../styles/AdminHome.css";
+import "../../styles/studentdata/StudentsPage.css";
 import AdminSidebar from "../../components/AdminSidebar.jsx";
 import { Trash2 } from "lucide-react";
 import { deleteProfile, getAllProfiles } from "../../hooks/useProfile.js";
 
 const StudentsPage = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [allUsers, setAllUsers] = useState([]);
+    const [allProfiles, setAllProfiles] = useState([]);
     const user = JSON.parse(localStorage.getItem("user"));
-    const name = user?.userName?.charAt(0).toUpperCase();
-    const Id = user?.id;
+    const name = user?.userName?.split(" ").map(n => n.charAt(0).toUpperCase()).join("");
 
-      useEffect(() => {
+
+    useEffect(() => {
         const fetchAllUserProfile = async () => {
-          const response = await getAllProfiles();
-          if (response.success) {
-            setAllUsers(response.profiles);
-          } else {
-            alert(response.message)
-          }
+            const response = await getAllProfiles();
+            if (response.success) {
+                setAllProfiles(response.profiles);
+            } else {
+                alert(response.message)
+            }
         }
         fetchAllUserProfile();
-      }, []);
+    }, []);
 
-    const handleDelete = async() => {
+
+    const handleDelete = async (id) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this student?");
         if (confirmDelete) {
-          const response = await deleteProfile(Id);
-          alert(response.message);
+            const response = await deleteProfile(id);
+            if (response.success) {
+                setAllProfiles(response.profiles);
+            }
         }
     };
 
@@ -51,7 +53,7 @@ const StudentsPage = () => {
                 <div className="table-card">
                     <div className="table-title">
                         <h2>Total Students</h2>
-                        <span>Total: {allUsers?.length || 0}</span>
+                        <span>Total: {allProfiles?.length || 0}</span>
                     </div>
 
                     <div className="table-wrapper">
@@ -67,8 +69,8 @@ const StudentsPage = () => {
                             </thead>
 
                             <tbody>
-                                {allUsers && allUsers.length > 0 ? (
-                                    allUsers.map((student) => (
+                                {allProfiles && allProfiles.length > 0 ? (
+                                    allProfiles.map((student) => (
                                         <tr key={student._id || student.rollNumber}>
                                             <td>{student.rollNumber}</td>
                                             <td>{student.userName}</td>
@@ -76,7 +78,7 @@ const StudentsPage = () => {
                                             <td>{student.semester}</td>
 
                                             <td>
-                                                <button className="delete-btn" onClick={() => handleDelete(student._id)}>
+                                                <button className="delete-btn" onClick={() => handleDelete(student.userId)}>
                                                     <Trash2 size={18} />
                                                 </button>
                                             </td>

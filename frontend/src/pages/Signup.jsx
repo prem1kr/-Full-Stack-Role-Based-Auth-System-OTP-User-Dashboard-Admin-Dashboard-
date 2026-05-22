@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { sendotp, signup, verifyotp } from '../hooks/useAuth.js';
 import { validateSignup } from '../utils/signupValidation.js';
 import LoadingSpinner from '../components/Loading.jsx';
+import '../styles/signup/signup.css'
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -55,7 +56,7 @@ const Signup = () => {
             const response = await verifyotp(id, otp);
             if (response.success) {
                 alert(`${users.role} Verified successfully`);
-               navigate('/');
+                navigate('/');
             } else {
                 alert(response.message);
             }
@@ -70,38 +71,37 @@ const Signup = () => {
     }
 
     return (
-        <div className="container">
-            <form className="form"  >
-                <h1>Signup</h1>
+        <div className="auth-page">
+            <form className="auth-card">
 
-                {showSignup &&
+                <h1 className="auth-title">Signup</h1>
+
+                {showSignup && (
                     <>
-                        <select value={role} onChange={(e) => setRole(e.target.value)}>
-                            <option value=""> Select Role  </option>
-                            <option value="user"> User </option>
-                            <option value="admin">  Admin</option>
+                        <select className="auth-input" value={role} onChange={(e) => setRole(e.target.value)}>
+                            <option value="">Select Role</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
                         </select>
 
-                        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-                        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input className="auth-input" type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                        <input className="auth-input" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input className="auth-input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                        {Loading ? <LoadingSpinner /> : <button type="submit" onClick={handleSignup} > Signup </button>}
+                        {Loading ? <LoadingSpinner /> : <button className="auth-btn" type="button" onClick={handleSignup}>  Signup </button>}
                     </>
-                }
+                )}
 
-                {showOtp &&
+                {showOtp && (
                     <>
-                        <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
-                        {Loading ? <LoadingSpinner /> : <button onClick={handleVerifyOtp}> Verify OTP </button>}
+                        <input className="auth-input" type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
+                        {Loading ? <LoadingSpinner /> : <button className="auth-btn" type="button" onClick={handleVerifyOtp}>Verify OTP</button>}
                     </>
-                }
+                )}
 
-                <p onClick={() => navigate('/')}> Already have account? </p>
+                <p className="auth-link" onClick={() => navigate('/')}>  Already have account? </p>
 
             </form>
-
-
         </div>
     );
 };
