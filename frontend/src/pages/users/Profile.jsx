@@ -20,18 +20,19 @@ const Profile = () => {
   const courseOptions = ['B.Tech', 'BCA', 'MBA', 'MCA', 'BBA', 'B.Com'];
   const branchOptions = ['CSE', 'ECE', 'ME', 'CE', 'EE', 'IT'];
 
+
+  const fetchProfile = async () => {
+    try {
+      const response = await getProfile(Id);
+      setProfileData(response.profile);
+    } catch (err) {
+      console.error('Fetch profile failed', err);
+    }
+  };
+
   useEffect(() => {
-    if (!Id) return;
-    const fetchProfile = async () => {
-      try {
-        const response = await getProfile(Id);
-        setProfileData(response.profile);
-      } catch (err) {
-        console.error('Fetch profile failed', err);
-      }
-    };
     fetchProfile();
-  }, [Id]);
+  }, [])
 
   useEffect(() => {
     if (!profileData) return;
@@ -66,10 +67,12 @@ const Profile = () => {
       setLoading(true);
       if (!profileData) {
         await addProfile(formData);
+        fetchProfile();
         alert('Profile added successfully');
       } else {
         const updateData = { phone, address, pincode, course, branch, semester: Number(semester), rollNumber };
         await updateProfile(Id, updateData);
+        fetchProfile();
         alert('Profile updated successfully');
       }
 
@@ -83,7 +86,7 @@ const Profile = () => {
 
   return (
     <div className="container">
-  
+
       <form className="form" onSubmit={handleUpdate}>
         <h1>Edit Profile</h1>
         <input value={userName} disabled />

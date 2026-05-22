@@ -49,19 +49,19 @@ const UserHome = () => {
     }
   ];
 
- 
-    const fetchProfile = async () => {
-      try {
-        const response = await getProfile(Id);
-        setProfile(response.profile);
-      } catch (err) {
-        console.error('Fetch profile failed', err);
-      }
-    };
-  
-    useEffect(()=> {
-      fetchProfile();
-    },[]);
+
+  const fetchProfile = async () => {
+    try {
+      const response = await getProfile(Id);
+      setProfile(response.profile);
+    } catch (err) {
+      console.error('Fetch profile failed', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this student?");
@@ -147,7 +147,7 @@ const UserHome = () => {
         {showEdit && (
           <div className="modal-overlay">
             <div >
-              <button className="close-btn" onClick={() => setShowEdit(false)}> X </button>
+              <button className="close-btn" onClick={async () => { await fetchProfile(); setShowEdit(false); }} >X</button>
               <Profile profile={profile} setProfile={setProfile} />
             </div>
           </div>
