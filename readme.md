@@ -213,4 +213,4 @@ npm start
 
 ## 📸 UI Preview (Optional)
 
-You can add screenshots here later.
+![alt text](<Screenshot 2026-05-22 122819.png>) ![alt text](<Screenshot 2026-05-22 122835.png>) ![alt text](<Screenshot 2026-05-22 122844.png>) ![alt text](<Screenshot 2026-05-22 122938.png>) ![alt text](<Screenshot 2026-05-22 123007.png>) ![alt text](<Screenshot 2026-05-22 123038.png>) ![alt text](<Screenshot 2026-05-22 123202.png>) ![alt text](<Screenshot 2026-05-22 123209.png>) ![alt text](<Screenshot 2026-05-22 123216.png>) ![alt text](<Screenshot 2026-05-22 123224.png>) ![alt text](<Screenshot 2026-05-22 123322.png>) ![alt text](<Screenshot 2026-05-22 123329.png>) ![alt text](<Screenshot 2026-05-22 123405.png>) ![alt text](<Screenshot 2026-05-22 123449.png>)
